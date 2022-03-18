@@ -54,10 +54,79 @@ def occurrence_probability(input_data, input_word):
             return value/TOTAL_COUNT
 
 
+def find_optional_root(input_data):
+    """
+    Find best tree root for data from "parsed_dictionary.txt"
+    """
+    results = []
+    # try all the words as tree root
+    for i in range(len(input_data)):
+
+        # first word, no words on the left side, compute only right side
+        if i == 0:
+            level = 1
+            cost = 0
+            for j in range(len(input_data)):
+                # split -> remove end of line character
+                word = input_data[j][1].split("\n")[0]
+                # occurrence * level (depth)
+                current_cost = occurrence_probability(input_data, word) * level
+                cost += current_cost
+                level += 1
+            results.append(cost)
+        # last word, no other words on right side, compute only left side
+        elif i == len(input_data)-1:
+            level = 1
+            cost = 0
+            for j in reversed(range(len(input_data))):
+                # split -> remove end of line character
+                word = input_data[j][1].split("\n")[0]
+                # occurrence * level (depth)
+                current_cost = occurrence_probability(input_data, word) * level
+                cost += current_cost
+                level += 1
+            results.append(cost)
+        # there are words on both sides
+        else:
+            level = 1
+            cost = 0
+
+            # compute root
+            word = input_data[i][1].split("\n")[0]
+            # occurrence * level (depth)
+            current_cost = occurrence_probability(input_data, word) * level
+            cost += current_cost
+
+            # compute left side
+            level = 2
+            for j in reversed(range(0, i)):
+                # split -> remove end of line character
+                word = input_data[j][1].split("\n")[0]
+                # occurrence * level (depth)
+                current_cost = occurrence_probability(input_data, word) * level
+                cost += current_cost
+                level += 1
+
+            # compute right side
+            level = 2
+            for j in range(i+1, len(input_data)):
+                # split -> remove end of line character
+                word = input_data[j][1].split("\n")[0]
+                # occurrence * level (depth)
+                current_cost = occurrence_probability(input_data, word) * level
+                cost += current_cost
+                level += 1
+            results.append(cost)
+
+    print(results)
+    index = results.index(min(results))
+    return input_data[index][1]
+
+
 if __name__ == "__main__":
     data = read_and_parse("dictionary.txt", "parsed_dictionary.txt")
     print(f"Total count of all values is: {TOTAL_COUNT}")
     probability = occurrence_probability(data, "the")
     print(probability)
     # print(data)
-    print(find_optional_root(data))
+    print(f"Best roof is: {find_optional_root(data)}")
