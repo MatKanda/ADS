@@ -8,7 +8,7 @@ def read_and_parse(input_file, output_file):
     global TOTAL_COUNT
     print("Parsing document...")
 
-    data = []
+    parsed_data = []
 
     # open and close to clear data if already exists
     open(output_file, "w").close()
@@ -24,11 +24,11 @@ def read_and_parse(input_file, output_file):
         word = line.split(" ")[1]
         if value > 50_000:
             tmp = str(value) + " " + word
-            data.append([value, word])
+            parsed_data.append([value, word])
 
-    data = lex_arrangement(data, output_file)
+    parsed_data = lex_arrangement(parsed_data, output_file)
     print("Document parsed.")
-    return data
+    return parsed_data
 
 
 def lex_arrangement(input_data, output_file):
@@ -45,23 +45,19 @@ def lex_arrangement(input_data, output_file):
     return input_data
 
 
-def occurrence_probability(input_file, input_word):
-    # open file to read
-    file1 = open(input_file, 'r')
-    Lines = file1.readlines()
-
-    # iterate the lines read from file
-    for line in Lines:
-        value = int(line.split(" ")[0])
-        # need to remove end of line character
-        word = line.split(" ")[1].split("\n")[0]
+def occurrence_probability(input_data, input_word):
+    for i in range(len(input_data)):
+        # split -> remove end of line character
+        word = input_data[i][1].split("\n")[0]
         if word == input_word:
+            value = int(input_data[i][0])
             return value/TOTAL_COUNT
 
 
 if __name__ == "__main__":
     data = read_and_parse("dictionary.txt", "parsed_dictionary.txt")
     print(f"Total count of all values is: {TOTAL_COUNT}")
-    probability = occurrence_probability("dictionary.txt", "the")
+    probability = occurrence_probability(data, "the")
     print(probability)
-    print(data)
+    # print(data)
+    print(find_optional_root(data))
