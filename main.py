@@ -159,19 +159,25 @@ def create_tables(data, p, q):
     p.insert(0, 0)
     n += 1
 
+    # initialize arrays in certain range with 0
     cost_table = [[0 for j in range(n)] for i in range(n)]
     w = [[0 for j in range(n + 1)] for i in range(n + 1)]
     root_table = [[0 for j in range(n)] for i in range(n)]
 
+    # fill diagonal with dummy keys costs
     for i in range(1, n + 1):
         cost_table[i - 1][i - 1] = q[i - 1]
         w[i - 1][i - 1] = q[i - 1]
 
+    # compute cost table in diagonal
     for d in range(1, n):
         for i in range(1, n - d + 1):
             j = i + d - 1
+            # set max val so every valid result will overwrite that
             cost_table[i - 1][j] = sys.maxsize
             w[i - 1][j] = w[i - 1][j - 1] + p[j] + q[j]
+            # every key in this range will be root with subtrees
+            # save best root based on lowest cost
             for r in range(i, j + 1):
                 left = cost_table[i - 1][r - 1]
                 right = cost_table[r + 1 - 1][j]
