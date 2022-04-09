@@ -1,13 +1,12 @@
 """
-Longest Common Substring
+Longest Common Substring/Subsequence
 """
-from load_file import *
 
 
 def longest_common_substring(x, y):
     m = len(x)
     n = len(y)
-    table = [[0 for k in range(n + 1)] for l in range(m + 1)]
+    table = [[0 for i in range(n + 1)] for j in range(m + 1)]
     result = 0
 
     for i in range(m + 1):
@@ -38,7 +37,7 @@ def longest_common_subsequence(x, y):
     return table[m][n]
 
 
-def correct_text(input, dictionary):
+def correct_text_1(input, dictionary, is_subsequence: bool):
     maximum = 0
     correct_word = None
     data = []
@@ -49,7 +48,10 @@ def correct_text(input, dictionary):
             data.append(word)
             continue
         for dct in dictionary:
-            lcs = longest_common_subsequence(word, dct)
+            if is_subsequence:
+                lcs = longest_common_subsequence(word, dct)
+            else:
+                lcs = longest_common_substring(word, dct)
             if lcs > maximum:
                 correct_word = dct
                 maximum = lcs
