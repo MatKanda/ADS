@@ -22,4 +22,4 @@ def compare_results(x, y):
     for i in range(len(x)):
         if x[i].lower() != y[i].lower():
             counter += 1
-    return counter
+    return counter, 100 - (counter / len(x) * 100)

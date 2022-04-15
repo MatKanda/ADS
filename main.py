@@ -8,18 +8,29 @@ if __name__ == "__main__":
     dictionary = load_dict("slovnik.txt")
 
     print(f"Correct sentence is:\n{input_text_correct}\n")
+    print(f"Incorrect sentence to be corrected is:\n{input_text_incorrect}")
+    print("----------------------------------------------------------------------------------------------\n")
 
     # 1. option - subsequence
     data = correct_text_1(input_text_incorrect, dictionary, is_subsequence=True)
     print(data)
-    print(f"Number of incorrect words in subsequence method: {compare_results(input_text_correct, data)}\n")
+    errors, percentage = compare_results(input_text_correct, data)
+    print(f"Number of incorrect words in subsequence method: {errors}")
+    print(f"Percentage success in subsequence method: {percentage}")
+    print("----------------------------------------------------------------------------------------------\n")
 
     # 2. option - substring
     data = correct_text_1(input_text_incorrect, dictionary, is_subsequence=False)
     print(data)
-    print(f"Number of incorrect words in substring method: {compare_results(input_text_correct, data)}\n")
+    errors, percentage = compare_results(input_text_correct, data)
+    print(f"Number of incorrect words in substring method: {errors}")
+    print(f"Percentage success in substring method: {percentage}")
+    print("----------------------------------------------------------------------------------------------\n")
 
     # 3. option - edit distance
     data = correct_text_2(input_text_incorrect, dictionary)
     print(data)
-    print(f"Number of incorrect words in distance method: {compare_results(input_text_correct, data)}\n")
+    errors, percentage = compare_results(input_text_correct, data)
+    print(f"Number of incorrect words in distance method: {errors}")
+    print(f"Percentage success in distance method: {percentage}")
+    print("----------------------------------------------------------------------------------------------\n")

@@ -55,6 +55,8 @@ def correct_text_1(input, dictionary, is_subsequence: bool):
             if lcs > maximum:
                 correct_word = dct
                 maximum = lcs
+            if maximum == len(word):
+                continue
         data.append(correct_word)
         maximum = 0
 

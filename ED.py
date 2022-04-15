@@ -54,6 +54,6 @@ def correct_text_2(input, dictionary):
                 correct_word = dct
                 minimum = lcs
         data.append(correct_word)
-        minimum = 0
+        minimum = 50
 
     return data
