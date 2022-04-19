@@ -16,7 +16,7 @@ if __name__ == "__main__":
     print(data)
     errors, percentage = compare_results(input_text_correct, data)
     print(f"Number of incorrect words in subsequence method: {errors}")
-    print(f"Percentage success in subsequence method: {percentage}")
+    print(f"Percentage success in 'Subsequence' method: {percentage}")
     print("----------------------------------------------------------------------------------------------\n")
 
     # 2. option - substring
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     print(data)
     errors, percentage = compare_results(input_text_correct, data)
     print(f"Number of incorrect words in substring method: {errors}")
-    print(f"Percentage success in substring method: {percentage}")
+    print(f"Percentage success in 'Substring' method: {percentage}")
     print("----------------------------------------------------------------------------------------------\n")
 
     # 3. option - edit distance
@@ -32,5 +32,5 @@ if __name__ == "__main__":
     print(data)
     errors, percentage = compare_results(input_text_correct, data)
     print(f"Number of incorrect words in distance method: {errors}")
-    print(f"Percentage success in distance method: {percentage}")
+    print(f"Percentage success in 'Edit distance' method: {percentage}")
     print("----------------------------------------------------------------------------------------------\n")

@@ -10,7 +10,7 @@ def load_text(path):
 
 def load_dict(path):
     data = []
-    f = open(path, "r")
+    f = open(path, "r", encoding='utf-8-sig')
     Lines = f.readlines()
     for line in Lines:
         data.append(line.split("\n")[0])

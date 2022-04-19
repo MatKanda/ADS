@@ -53,6 +53,8 @@ def correct_text_2(input, dictionary):
             if lcs < minimum:
                 correct_word = dct
                 minimum = lcs
+            if minimum == 1:
+                break
         data.append(correct_word)
         minimum = 50
 
