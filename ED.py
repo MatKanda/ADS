@@ -6,34 +6,24 @@ Edit Distance solution.
 def edit_distance(str1, str2):
     m = len(str1)
     n = len(str2)
-    # Create a table to store results of subproblems
     dp = [[0 for i in range(n + 1)] for j in range(m + 1)]
 
-    # Fill d[][] in bottom up manner
     for i in range(m + 1):
         for j in range(n + 1):
-
-            # If first string is empty, only option is to
-            # insert all characters of second string
             if i == 0:
-                dp[i][j] = j  # Min. operations = j
+                dp[i][j] = j
 
-            # If second string is empty, only option is to
-            # remove all characters of second string
             elif j == 0:
-                dp[i][j] = i  # Min. operations = i
+                dp[i][j] = i
 
-            # If last characters are same, ignore last char
-            # and recur for remaining string
+            # If letters are same, ignore last char and take diag value for prev letters
             elif str1[i - 1] == str2[j - 1]:
                 dp[i][j] = dp[i - 1][j - 1]
 
-            # If last character are different, consider all
-            # possibilities and find minimum
+            # If letter is different, consider all possibilities and find minimum
+            # min of 2 upper row vals and 1 left column val + 1
             else:
-                dp[i][j] = 1 + min(dp[i][j - 1],  # Insert
-                                   dp[i - 1][j],  # Remove
-                                   dp[i - 1][j - 1])  # Replace
+                dp[i][j] = 1 + min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1])
 
     return dp[m][n]
 

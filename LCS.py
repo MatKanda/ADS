@@ -14,7 +14,9 @@ def longest_common_substring(x, y):
             if (i == 0 or j == 0):
                 table[i][j] = 0
             elif (x[i - 1] == y[j - 1]):
+                # letter is same in row and column
                 table[i][j] = table[i - 1][j - 1] + 1
+                # save highest value
                 result = max(result, table[i][j])
             else:
                 table[i][j] = 0
@@ -30,8 +32,10 @@ def longest_common_subsequence(x, y):
             if i == 0 or j == 0:
                 table[i][j] = 0
             elif x[i - 1] == y[j - 1]:
+                # letter is same in row and column
                 table[i][j] = table[i - 1][j - 1] + 1
             else:
+                # letter is not same in row and column
                 table[i][j] = max(table[i - 1][j], table[i][j - 1])
 
     return table[m][n]
