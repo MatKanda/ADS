@@ -71,6 +71,7 @@ def is2_satisfiable(n, m, a, b):
             dfs_first(i)
 
     saved_stack = copy.deepcopy(s)
+    saved_stack.pop(0)
     while len(s) > 0:
         top = s[-1]
         s.remove(s[-1])
