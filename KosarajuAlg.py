@@ -1,7 +1,12 @@
-from readFile import load_input
+import copy
+import math
+import random
 
 
-MAX = 10000
+# https://www.geeksforgeeks.org/2-satisfiability-2-sat-problem/amp/
+
+
+MAX = 1000
 adj = [[0 for i in range(MAX)] for j in range(MAX)]
 adjInv = [[0 for i in range(MAX)] for j in range(MAX)]
 visited = [None for i in range(MAX)]
@@ -11,68 +16,86 @@ scc = [0 for i in range(MAX)]
 counter = 1
 
 
-def addEdges(a, b):
+def add_edges(a, b):
     adj[a].append(b)
 
 
-def addEdgesInverse(a, b):
+def add_edges_inverse(a, b):
     adjInv[b].append(a)
 
 
-def dfsFirst(u):
+def dfs_first(u):
     if visited[u]:
         return
     visited[u] = True
     for i in range(len(adj[u])):
-        dfsFirst(adj[u][i])
+        dfs_first(adj[u][i])
     s.append(u)
 
 
-def dfsSecond(u):
+def dfs_second(u):
     if visitedInv[u]:
         return
     visitedInv[u] = True
     for i in range(len(adjInv[u])):
-        dfsSecond(adjInv[u][i])
+        dfs_second(adjInv[u][i])
     scc[u] = counter
 
 
-def is2Satisfiable(n, m, a, b):
-    global counter
+def is2_satisfiable(n, m, a, b):
+    global counter, s
     for i in range(m):
         if a[i] > 0 and b[i] > 0:
-            addEdges(a[i] + n, b[i])
-            addEdgesInverse(a[i] + n, b[i])
-            addEdges(b[i] + n, a[i])
-            addEdgesInverse(b[i] + n, a[i])
+            add_edges(a[i] + n, b[i])
+            add_edges_inverse(a[i] + n, b[i])
+            add_edges(b[i] + n, a[i])
+            add_edges_inverse(b[i] + n, a[i])
         elif a[i] > 0 and b[i] < 0:
-            addEdges(a[i] + n, n - b[i])
-            addEdgesInverse(a[i] + n, n - b[i])
-            addEdges(-b[i], a[i])
-            addEdgesInverse(-b[i], a[i])
+            add_edges(a[i] + n, n - b[i])
+            add_edges_inverse(a[i] + n, n - b[i])
+            add_edges(-b[i], a[i])
+            add_edges_inverse(-b[i], a[i])
         elif a[i] < 0 and b[i] > 0:
-            addEdges(-a[i], b[i])
-            addEdgesInverse(-a[i], b[i])
-            addEdges(b[i] + n, n - a[i])
-            addEdgesInverse(b[i] + n, n - a[i])
+            add_edges(-a[i], b[i])
+            add_edges_inverse(-a[i], b[i])
+            add_edges(b[i] + n, n - a[i])
+            add_edges_inverse(b[i] + n, n - a[i])
         else:
-            addEdges(-a[i], n-b[i])
-            addEdgesInverse(-a[i], n-b[i])
-            addEdges(-b[i], n-a[i])
-            addEdgesInverse(-b[i], n-a[i])
+            add_edges(-a[i], n - b[i])
+            add_edges_inverse(-a[i], n - b[i])
+            add_edges(-b[i], n - a[i])
+            add_edges_inverse(-b[i], n - a[i])
 
-    for i in range(1, (2*n) + 1):
+    for i in range(1, (2 * n) + 1):
         if not visited[i]:
-            dfsFirst(i)
+            dfs_first(i)
 
+    saved_stack = copy.deepcopy(s)
     while len(s) > 0:
         top = s[-1]
         s.remove(s[-1])
         if not visitedInv[top]:
-            dfsSecond(top)
+            dfs_second(top)
             counter += 1
 
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         if scc[i] == scc[i + n]:
-            return "Unsatisfiable"
-    return "Satisfiable"
+            return "Unsatisfiable", None
+
+    solutions = [2 for i in range(len(saved_stack))]
+    vert = []
+    for i in range(1, n + 1):
+        vert.append(i)
+    for i in range(1, n + 1):
+        vert.append(i * -1)
+
+    for i in range(1, len(saved_stack) + 1):
+        if solutions[vert[saved_stack[i - 1] - 1]] == 2:
+            if vert[saved_stack[i - 1] - 1] > 0:
+                solutions[vert[saved_stack[i-1]-1]] = True
+                # solutions[:] = [0 if x == vert[saved_stack[i-1]-1] else x for x in solutions]
+            elif solutions[-(vert[saved_stack[i - 1] - 1])] == 2:
+                # solutions[:] = [1 if x == -(vert[saved_stack[i-1]-1]) else x for x in solutions]
+                solutions[-(vert[saved_stack[i-1]-1])] = False
+    solutions = solutions[1:n+1]
+    return "Satisfiable", solutions

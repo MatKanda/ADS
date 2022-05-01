@@ -7,20 +7,18 @@ def load_input(file):
     values_one = []
     values_two = []
     for line in Lines:
+        first = int(line.split()[0])
+        second = int(line.split()[1])
         if count == 0:
-            nb_var = int(line.split()[0])
-            nb_clauses = int(line.split()[1])
+            nb_var = first
+            nb_clauses = second
         else:
-            values_one.append(int(line.split()[0]))
-            values_two.append(int(line.split()[1]))
-            # tmp_array = []
-            # tmp = line.split()[0]
-            # if tmp != "0":
-            #     tmp_array.append(tmp)
-            # tmp = line.split()[1]
-            # if tmp != "0":
-            #     tmp_array.append(tmp)
-            # values.append(tmp_array)
+            if second == 0:
+                values_one.append(first)
+                values_two.append(first)
+            else:
+                values_one.append(first)
+                values_two.append(second)
         count += 1
 
     return nb_var, nb_clauses, values_one, values_two
