@@ -70,8 +70,6 @@ def is2_satisfiable(n, m, a, b):
         if not visited[i]:
             dfs_first(i)
 
-    saved_stack = copy.deepcopy(s)
-    saved_stack.pop(0)
     while len(s) > 0:
         top = s[-1]
         s.remove(s[-1])
@@ -82,23 +80,6 @@ def is2_satisfiable(n, m, a, b):
     for i in range(1, n + 1):
         if scc[i] == scc[i + n]:
             return "Unsatisfiable", None
-
-    # solutions = [2 for i in range(len(saved_stack))]
-    # vert = []
-    # for i in range(1, n + 1):
-    #     vert.append(i)
-    # for i in range(1, n + 1):
-    #     vert.append(i * -1)
-    #
-    # for i in range(1, len(saved_stack) + 1):
-    #     if solutions[vert[saved_stack[i - 1] - 1]] == 2:
-    #         if vert[saved_stack[i - 1] - 1] > 0:
-    #             solutions[vert[saved_stack[i-1]-1]] = True
-    #             # solutions[:] = [0 if x == vert[saved_stack[i-1]-1] else x for x in solutions]
-    #         elif solutions[-(vert[saved_stack[i - 1] - 1])] == 2:
-    #             # solutions[:] = [1 if x == -(vert[saved_stack[i-1]-1]) else x for x in solutions]
-    #             solutions[-(vert[saved_stack[i-1]-1])] = False
-    # solutions = solutions[1:n+1]
 
     solutions = [None for i in range(n+1)]
     for i in range(1, n+1):
