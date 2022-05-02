@@ -1,7 +1,3 @@
-import copy
-import math
-import random
-
 
 # https://www.geeksforgeeks.org/2-satisfiability-2-sat-problem/amp/
 
