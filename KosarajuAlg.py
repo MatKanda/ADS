@@ -9,6 +9,7 @@ visited = [None for i in range(MAX)]
 visitedInv = [None for i in range(MAX)]
 s = []
 scc = [0 for i in range(MAX)]
+# number of SCC
 counter = 1
 
 
@@ -40,6 +41,7 @@ def dfs_second(u):
 
 def is2_satisfiable(n, m, a, b):
     global counter, s
+    # adding edges to the graph
     for i in range(m):
         if a[i] > 0 and b[i] > 0:
             add_edges(a[i] + n, b[i])
@@ -62,10 +64,12 @@ def is2_satisfiable(n, m, a, b):
             add_edges(-b[i], n - a[i])
             add_edges_inverse(-b[i], n - a[i])
 
+    # first step - traverses the original graph
     for i in range(1, (2 * n) + 1):
         if not visited[i]:
             dfs_first(i)
 
+    # second step - traverses the inverse graph
     while len(s) > 0:
         top = s[-1]
         s.remove(s[-1])
@@ -73,6 +77,7 @@ def is2_satisfiable(n, m, a, b):
             dfs_second(top)
             counter += 1
 
+    # if x and -x are in same scc
     for i in range(1, n + 1):
         if scc[i] == scc[i + n]:
             return "Unsatisfiable", None
