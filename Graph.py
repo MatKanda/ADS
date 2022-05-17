@@ -1,6 +1,7 @@
 import math
 from collections import defaultdict
 from ast import literal_eval
+import sys
 
 
 # https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
@@ -58,3 +59,44 @@ class Graph:
 
 def distance(p1, p2):
     return math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]))
+
+
+def compute_path(conn_comp):
+    total_length = 0
+    results = []
+
+    while True:
+        main_component = conn_comp[0]
+        best_from = None
+        best_to = None
+        best_index = None
+        best_distance = sys.maxsize
+
+        # pick group from connected components
+        for _from in main_component:
+            indx_to = 0
+            # pick another group from connected component for comparison
+            for component_to in conn_comp[1:]:
+                # take each point from picked group and compute distance between points
+                for point_to in component_to:
+                    dist = distance(_from, point_to)
+                    if dist < best_distance:
+                        best_distance = dist
+                        best_from = _from
+                        best_to = point_to
+                        best_index = indx_to + 1
+                indx_to += 1
+
+        # append best points to results
+        results.append([best_from, best_to])
+        # inc total path length
+        total_length += best_distance
+        # merge best result to main component
+        conn_comp[0] = conn_comp[0] + conn_comp[best_index]
+        # delete merged component
+        del conn_comp[best_index]
+        # only 1 component left -> whole graph is connected
+        if len(conn_comp) <= 1:
+            break
+
+    return results, total_length
